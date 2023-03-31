@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Jogo da Velha</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+      td {
+        border: 1px solid black;
+        width: 50px;
+        height: 50px;
+        text-align: center;
+        font-size: 30px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .player1 {
+        color: blue;
+      }
+      .player2 {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Jogo da Velha</h1>
+    <table>
+      <tr>
+        <td id="cell-0" onclick="escolher(this)"></td>
+        <td id="cell-1" onclick="escolher(this)"></td>
+        <td id="cell-2" onclick="escolher(this)"></td>
+      </tr>
+      <tr>
+        <td id="cell-3" onclick="escolher(this)"></td>
+        <td id="cell-4" onclick="escolher(this)"></td>
+        <td id="cell-5" onclick="escolher(this)"></td>
+      </tr>
+      <tr>
+        <td id="cell-6" onclick="escolher(this)"></td>
+        <td id="cell-7" onclick="escolher(this)"></td>
+        <td id="cell-8" onclick="escolher(this)"></td>
+      </tr>
+    </table>
+    <p id="turn">Vez do jogador X</p>
+    <p id="result"></p>
+    <button id="reiniciar" onclick="reiniciar()">Reiniciar</button>
+
+    <script>
+      let jogador = "X";
+      let vencedor = null;
+      let movimentos = 0;
+
+      function escolher(quadrado) {
+        if (vencedor !== null) {
+          return;
+        }
+
+        if (quadrado.innerText === "") {
+          quadrado.innerText = jogador;
+          movimentos++;
+          checarVencedor();
+          trocarJogador();
+          enviarMovimento(quadrado.id);
+        }
+      }
+
+      function trocarJogador() {
+        jogador = jogador === "X" ? "O" : "X";
+        const mensagem = document.getElementById("turn");
+        mensagem.innerText = `Vez do jogador ${jogador}`;
+      }
+
+      function checarVencedor() {
+        const vitorias = [
+          [0, 1, 2],
+          [3, 4, 5],
+          [6, 7, 8],
+          [0, 3, 6],
+          [1, 4, 7],
+          [2, 5, 8],
+          [0, 4, 8],
+          [2, 4, 6]
+        ];
+
+        for (let i = 0; i < vitorias.length; i++) {
+          const [a, b, c] = vitorias[i];
+          const quadradoA = document.getElementById("cell-" + a);
+          const quadradoB = document.getElementById("cell-" + b);
+          const quadradoC = document.getElementById("cell-" + c);
+
+          if (
+            quadradoA.innerText !== "" &&
+            quadradoA.innerText === quadradoB.innerText &&
+            quadradoA.innerText === quadradoC.innerText
+          ) {
+           
